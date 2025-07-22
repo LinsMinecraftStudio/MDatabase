@@ -1,17 +1,21 @@
 package io.github.lijinhong11.mdatabase.serialization;
 
 import io.github.lijinhong11.mdatabase.serialization.annotations.Column;
+import io.github.lijinhong11.mdatabase.serialization.annotations.Converter;
+import io.github.lijinhong11.mdatabase.serialization.converters.UUIDConverter;
 import io.github.lijinhong11.mdatabase.serialization.exceptions.CannotInstanceException;
 import io.github.lijinhong11.mdatabase.serialization.exceptions.SerializationException;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ObjectSerializer {
@@ -19,6 +23,10 @@ public class ObjectSerializer {
     private static final Map<Class<?>, List<Field>> FIELD_CACHE = new ConcurrentHashMap<>();
 
     private ObjectSerializer() {}
+
+    static {
+        registerConverter(UUID.class, new UUIDConverter());
+    }
 
     public static <T> void registerConverter(Class<T> clazz, ObjectConverter<T> converter) {
         CONVERTERS.put(clazz, converter);
@@ -62,6 +70,18 @@ public class ObjectSerializer {
         } else {
             List<Field> fields = getAllFields(clazz);
             FIELD_CACHE.put(clazz, fields);
+
+            for (Field field : fields) {
+                if (field.isAnnotationPresent(Converter.class)) {
+                    try {
+                        CONVERTERS.put(field.getType(), field.getAnnotation(Converter.class).value().getDeclaredConstructor().newInstance());
+                    } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException |
+                             InstantiationException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+
             return fields;
         }
     }

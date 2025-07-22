@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.github.lijinhong11</groupId>
-    <version>1.0.1</version>
+    <version>1.0.2-SNAPSHOT</version>
     <artifactId>MDatabase</artifactId>
     <name>MDatabase</name>
     <description>A database library with some ORM features</description>
@@ -120,7 +120,7 @@
             <plugin>
                 <groupId>org.sonatype.central</groupId>
                 <artifactId>central-publishing-maven-plugin</artifactId>
-                <version>0.6.0</version>
+                <version>0.8.0</version>
                 <extensions>true</extensions>
                 <configuration>
                     <publishingServerId>central</publishingServerId>
@@ -154,14 +154,6 @@
                         <relocation>
                             <pattern>org.mariadb.jdbc</pattern>
                             <shadedPattern>io.github.lijinhong11.mdatabase.libs.mariadb</shadedPattern>
-                        </relocation>
-                        <relocation>
-                            <pattern>org.intellij.lang.annotations</pattern>
-                            <shadedPattern>io.github.lijinhong11.mdatabase.libs.annotations</shadedPattern>
-                        </relocation>
-                        <relocation>
-                            <pattern>org.jetbrains.annotations</pattern>
-                            <shadedPattern>io.github.lijinhong11.mdatabase.libs.annotations</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>
