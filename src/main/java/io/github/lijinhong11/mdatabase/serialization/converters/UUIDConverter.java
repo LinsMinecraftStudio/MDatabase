@@ -15,6 +15,15 @@ public class UUIDConverter implements ObjectConverter<UUID> {
     }
 
     @Override
+    public Object convertBack(Object t) {
+        if (t instanceof UUID uuid) {
+            return uuid.toString();
+        }
+
+        return t;
+    }
+
+    @Override
     public String getSqlType() {
         return "TEXT";
     }

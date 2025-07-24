@@ -196,7 +196,7 @@ abstract class AbstractSQLConnection implements DatabaseConnection {
             if (f.isAnnotationPresent(Column.class)) {
                 String columnName = ObjectSerializer.getColumnName(f);
                 try {
-                    sql.value(columnName, f.get(object));
+                    sql.value(columnName, ObjectSerializer.convertBack(f.get(object)));
                 } catch (IllegalAccessException e) {
                     //never happen
                     throw new RuntimeException(e);
@@ -230,7 +230,7 @@ abstract class AbstractSQLConnection implements DatabaseConnection {
             if (f.isAnnotationPresent(Column.class)) {
                 String columnName = ObjectSerializer.getColumnName(f);
                 try {
-                    sql.value(columnName, f.get(object));
+                    sql.value(columnName, ObjectSerializer.convertBack(f.get(object)));
                 } catch (IllegalAccessException e) {
                     //never happen
                     throw new RuntimeException(e);
@@ -265,7 +265,7 @@ abstract class AbstractSQLConnection implements DatabaseConnection {
             if (f.isAnnotationPresent(Column.class)) {
                 String columnName = ObjectSerializer.getColumnName(f);
                 try {
-                    sql.set(columnName, f.get(object));
+                    sql.set(columnName, ObjectSerializer.convertBack(f.get(object)));
                 } catch (IllegalAccessException e) {
                     //never happen
                     throw new RuntimeException(e);

@@ -64,6 +64,30 @@ public class ObjectSerializer {
         return list;
     }
 
+    public static Object convertBack(Object obj) {
+        if (obj == null) {
+            return null;
+        }
+
+        return convertBack(obj, obj.getClass());
+    }
+
+    public static Object convertBack(Object obj, Class<?> clazz) {
+        if (obj == null) {
+            return null;
+        }
+
+        if (clazz.isEnum()) {
+            return obj.toString();
+        }
+
+        if (CONVERTERS.containsKey(clazz)) {
+            return CONVERTERS.get(clazz).convertBack(obj);
+        }
+
+        return obj;
+    }
+
     private static <T> List<Field> getCachedFields(Class<T> clazz) {
         if (FIELD_CACHE.containsKey(clazz)) {
             return FIELD_CACHE.get(clazz);
