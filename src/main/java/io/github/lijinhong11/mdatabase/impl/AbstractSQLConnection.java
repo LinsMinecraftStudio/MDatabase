@@ -212,7 +212,7 @@ abstract class AbstractSQLConnection implements DatabaseConnection {
     }
 
     @Override
-    public <T> void upsertObject(@NotNull Class<T> clazz, @NotNull T object) throws SQLException {
+    public <T> void upsertObject(@NotNull Class<T> clazz, @NotNull T object, @NotNull Condition condition) throws SQLException {
         if (!clazz.isAnnotationPresent(Table.class)) {
             throw new IllegalArgumentException("the class must be annotated with @Table");
         }
@@ -237,6 +237,8 @@ abstract class AbstractSQLConnection implements DatabaseConnection {
                 }
             }
         }
+
+        sql.where(condition);
 
         if (debug) {
             LOGGER.info("Invoking SQL: " + sql.getSql(getType()));

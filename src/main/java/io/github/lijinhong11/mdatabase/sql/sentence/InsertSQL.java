@@ -1,6 +1,7 @@
 package io.github.lijinhong11.mdatabase.sql.sentence;
 
 import io.github.lijinhong11.mdatabase.enums.DatabaseType;
+import io.github.lijinhong11.mdatabase.sql.conditions.Condition;
 
 import java.util.*;
 
@@ -9,6 +10,7 @@ public class InsertSQL extends SQL {
     private final boolean upsert;
 
     private String table;
+    private Condition whereCondition;
 
     InsertSQL(boolean upsert) {
         this.upsert = upsert;
@@ -23,6 +25,11 @@ public class InsertSQL extends SQL {
     public InsertSQL value(String column, Object value) {
         validateIdentifier(column);
         values.put(column, value);
+        return this;
+    }
+
+    public InsertSQL where(Condition condition) {
+        this.whereCondition = condition;
         return this;
     }
 
@@ -55,6 +62,11 @@ public class InsertSQL extends SQL {
             }
 
             sqlBuilder.append(String.join(", ", updates));
+        }
+
+        if (whereCondition != null) {
+            sqlBuilder.append(" WHERE ").append(whereCondition.getSql());
+            parameters.addAll(whereCondition.getParameters());
         }
 
         return sqlBuilder.toString();
