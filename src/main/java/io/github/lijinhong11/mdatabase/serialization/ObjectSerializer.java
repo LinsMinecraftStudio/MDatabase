@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
+@SuppressWarnings("unchecked")
 public class ObjectSerializer {
     private static final Map<Class<?>, ObjectConverter<?>> CONVERTERS = new ConcurrentHashMap<>();
     private static final Map<Class<?>, List<Field>> FIELD_CACHE = new ConcurrentHashMap<>();
@@ -94,17 +95,6 @@ public class ObjectSerializer {
         } else {
             List<Field> fields = getAllFields(clazz);
             FIELD_CACHE.put(clazz, fields);
-
-            for (Field field : fields) {
-                if (field.isAnnotationPresent(Converter.class)) {
-                    try {
-                        CONVERTERS.put(field.getType(), field.getAnnotation(Converter.class).value().getDeclaredConstructor().newInstance());
-                    } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException |
-                             InstantiationException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-            }
 
             return fields;
         }
@@ -189,6 +179,15 @@ public class ObjectSerializer {
         for (Field field : clazz.getDeclaredFields()) {
             if (Modifier.isFinal(field.getModifiers())) {
                 continue;
+            }
+
+            if (field.isAnnotationPresent(Converter.class)) {
+                try {
+                    CONVERTERS.put(field.getType(), field.getAnnotation(Converter.class).value().getDeclaredConstructor().newInstance());
+                } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException |
+                         InstantiationException e) {
+                    throw new RuntimeException(e);
+                }
             }
 
             field.setAccessible(true);
