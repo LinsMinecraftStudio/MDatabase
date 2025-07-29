@@ -56,15 +56,7 @@ public interface DatabaseConnection {
      * @param object the object to insert
      * @param <T> the type
      */
-    <T> void insertObject(@NotNull Class<T> clazz, @NotNull T object) throws SQLException;
-
-    /**
-     * Upsert object
-     * @param clazz the class of the object
-     * @param object the object to upsert
-     * @param <T> the type
-     */
-    <T> void upsertObject(@NotNull Class<T> clazz, @NotNull T object, @NotNull Condition condition) throws SQLException;
+    <T> void insertObject(@NotNull Class<T> clazz, @NotNull T object, boolean upsert) throws SQLException;
 
     /**
      * Update object

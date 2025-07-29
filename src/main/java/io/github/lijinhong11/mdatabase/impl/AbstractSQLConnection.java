@@ -16,6 +16,7 @@ import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.logging.Logger;
@@ -178,7 +179,7 @@ abstract class AbstractSQLConnection implements DatabaseConnection {
     }
 
     @Override
-    public <T> void insertObject(@NotNull Class<T> clazz, @NotNull T object) throws SQLException {
+    public <T> void insertObject(@NotNull Class<T> clazz, @NotNull T object, boolean upsert) throws SQLException {
         if (!clazz.isAnnotationPresent(Table.class)) {
             throw new IllegalArgumentException("the class must be annotated with @Table");
         }
@@ -188,57 +189,38 @@ abstract class AbstractSQLConnection implements DatabaseConnection {
             throw new IllegalArgumentException("the table name cannot be empty");
         }
 
-        List<Field> field = ObjectSerializer.getAllFields(clazz);
+        List<Field> fields = ObjectSerializer.getAllFields(clazz);
 
-        InsertSQL sql = SQL.insert().into(table.name());
+        InsertSQL sql = upsert ? SQL.upsert().into(table.name()) : SQL.insert().into(table.name());
 
-        for (Field f : field) {
+        List<String> conflictKeys = new ArrayList<>();
+
+        for (Field f : fields) {
             if (f.isAnnotationPresent(Column.class)) {
                 String columnName = ObjectSerializer.getColumnName(f);
                 try {
                     sql.value(columnName, ObjectSerializer.convertBack(f.get(object)));
                 } catch (IllegalAccessException e) {
-                    //never happen
                     throw new RuntimeException(e);
+                }
+
+                // 只有 upsert 时，且是 SQLite 或 PostgreSQL，自动收集主键冲突字段
+                if (upsert && (getType() == DatabaseType.SQLITE || getType() == DatabaseType.POSTGRESQL)) {
+                    boolean isPrimary = f.isAnnotationPresent(PrimaryKey.class);
+                    if (isPrimary) {
+                        conflictKeys.add(columnName);
+                    }
                 }
             }
         }
 
-        if (debug) {
-            LOGGER.info("Invoking SQL: " + sql.getSql(getType()));
-        }
-
-        sql.build(getConnection(), getType()).execute();
-    }
-
-    @Override
-    public <T> void upsertObject(@NotNull Class<T> clazz, @NotNull T object, @NotNull Condition condition) throws SQLException {
-        if (!clazz.isAnnotationPresent(Table.class)) {
-            throw new IllegalArgumentException("the class must be annotated with @Table");
-        }
-
-        Table table = clazz.getAnnotation(Table.class);
-        if (Objects.isNull(table.name()) || table.name().isBlank()) {
-            throw new IllegalArgumentException("the table name cannot be empty");
-        }
-
-        List<Field> field = ObjectSerializer.getAllFields(clazz);
-
-        InsertSQL sql = SQL.upsert().into(table.name());
-
-        for (Field f : field) {
-            if (f.isAnnotationPresent(Column.class)) {
-                String columnName = ObjectSerializer.getColumnName(f);
-                try {
-                    sql.value(columnName, ObjectSerializer.convertBack(f.get(object)));
-                } catch (IllegalAccessException e) {
-                    //never happen
-                    throw new RuntimeException(e);
-                }
+        if (upsert && (getType() == DatabaseType.SQLITE || getType() == DatabaseType.POSTGRESQL)) {
+            if (conflictKeys.isEmpty()) {
+                throw new IllegalStateException("Upsert requires at least one @PrimaryKey or @Column(primaryKey=true) in " + clazz.getName());
             }
-        }
 
-        sql.where(condition);
+            sql = sql.conflictKeys(conflictKeys.toArray(new String[0]));
+        }
 
         if (debug) {
             LOGGER.info("Invoking SQL: " + sql.getSql(getType()));
@@ -264,11 +246,13 @@ abstract class AbstractSQLConnection implements DatabaseConnection {
         for (Field f : field) {
             if (f.isAnnotationPresent(Column.class)) {
                 String columnName = ObjectSerializer.getColumnName(f);
-                try {
-                    sql.set(columnName, ObjectSerializer.convertBack(f.get(object)));
-                } catch (IllegalAccessException e) {
-                    //never happen
-                    throw new RuntimeException(e);
+                if (!f.isAnnotationPresent(PrimaryKey.class)) {
+                    try {
+                        sql = sql.set(columnName, ObjectSerializer.convertBack(f.get(object)));
+                    } catch (IllegalAccessException e) {
+                        //never happen
+                        throw new RuntimeException(e);
+                    }
                 }
             }
         }

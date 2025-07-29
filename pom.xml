@@ -187,6 +187,19 @@
             <artifactId>postgresql</artifactId>
             <version>42.7.7</version>
             <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.checkerframework</groupId>
+                    <artifactId>checker-qual</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.checkerframework</groupId>
+            <artifactId>checker-qual</artifactId>
+            <version>3.49.3</version>
+            <scope>runtime</scope>
         </dependency>
     </dependencies>
 </project>
