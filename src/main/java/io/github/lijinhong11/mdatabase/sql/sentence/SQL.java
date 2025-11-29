@@ -1,6 +1,7 @@
 package io.github.lijinhong11.mdatabase.sql.sentence;
 
 import io.github.lijinhong11.mdatabase.enums.DatabaseType;
+import io.github.lijinhong11.mdatabase.exceptions.IllegalIdentifierException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,7 +15,7 @@ public abstract class SQL {
 
     /**
      * Create a SELECT SQL builder
-     * 
+     *
      * @return a new SelectSQL instance
      */
     public static SelectSQL select() {
@@ -23,7 +24,7 @@ public abstract class SQL {
 
     /**
      * Create an INSERT SQL builder
-     * 
+     *
      * @return a new InsertSQL instance
      */
     public static InsertSQL insert() {
@@ -33,7 +34,7 @@ public abstract class SQL {
     /**
      * Create an UPSERT (INSERT ... ON DUPLICATE KEY UPDATE / ON CONFLICT) SQL
      * builder
-     * 
+     *
      * @return a new InsertSQL instance configured for upsert operations
      */
     public static InsertSQL upsert() {
@@ -42,7 +43,7 @@ public abstract class SQL {
 
     /**
      * Create an UPDATE SQL builder
-     * 
+     *
      * @return a new UpdateSQL instance
      */
     public static UpdateSQL update() {
@@ -51,7 +52,7 @@ public abstract class SQL {
 
     /**
      * Create a DELETE SQL builder
-     * 
+     *
      * @return a new DeleteSQL instance
      */
     public static DeleteSQL delete() {
@@ -60,7 +61,7 @@ public abstract class SQL {
 
     /**
      * Create a DROP SQL builder for dropping tables, indexes, or views
-     * 
+     *
      * @return a new DropSQL instance
      */
     public static DropSQL drop() {
@@ -69,7 +70,7 @@ public abstract class SQL {
 
     /**
      * Create a CREATE TABLE SQL builder
-     * 
+     *
      * @return a new CreateTableSQL instance
      */
     public static CreateTableSQL createTable() {
@@ -78,7 +79,7 @@ public abstract class SQL {
 
     /**
      * Create an ALTER TABLE SQL builder
-     * 
+     *
      * @return a new AlterTableSQL instance
      */
     public static AlterTableSQL alterTable() {
@@ -87,7 +88,7 @@ public abstract class SQL {
 
     /**
      * Create a CREATE INDEX SQL builder
-     * 
+     *
      * @return a new CreateIndexSQL instance
      */
     public static CreateIndexSQL createIndex() {
@@ -96,7 +97,7 @@ public abstract class SQL {
 
     /**
      * Create a CREATE VIEW SQL builder
-     * 
+     *
      * @return a new CreateViewSQL instance
      */
     public static CreateViewSQL createView() {
@@ -105,7 +106,7 @@ public abstract class SQL {
 
     /**
      * Create a TRUNCATE TABLE SQL builder
-     * 
+     *
      * @return a new TruncateSQL instance
      */
     public static TruncateSQL truncate() {
@@ -114,7 +115,7 @@ public abstract class SQL {
 
     /**
      * Build a PreparedStatement from this SQL builder
-     * 
+     *
      * @param connection the database connection
      * @param type       the database type
      * @return a PreparedStatement with parameters set
@@ -151,7 +152,7 @@ public abstract class SQL {
 
     void validateIdentifier(String identifier) {
         if (!identifier.matches("[a-zA-Z_][a-zA-Z0-9_]*")) {
-            throw new IllegalArgumentException("Invalid SQL identifier: " + identifier);
+            throw new IllegalIdentifierException("Invalid SQL identifier: " + identifier);
         }
     }
 }

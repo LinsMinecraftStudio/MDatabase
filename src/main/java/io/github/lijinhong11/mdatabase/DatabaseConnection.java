@@ -20,50 +20,56 @@ public interface DatabaseConnection {
 
     /**
      * Select one object
-     * @param clazz the class of the object
+     *
+     * @param clazz     the class of the object
      * @param condition the condition to select
+     * @param <T>       the type
      * @return the object
-     * @param <T> the type
      */
     @NotNull <T> T selectOne(Class<T> clazz, @NotNull Condition condition) throws SQLException;
 
     /**
      * Select multiple objects
+     *
      * @param clazz the class of the object
+     * @param <T>   the type
      * @return a list of objects
-     * @param <T> the type
      */
     @NotNull <T> List<T> selectMulti(@NotNull Class<T> clazz) throws SQLException;
 
     /**
      * Select multiple objects
-     * @param clazz the class of the object
+     *
+     * @param clazz     the class of the object
      * @param condition the condition to select
+     * @param <T>       the type
      * @return a list of objects
-     * @param <T> the type
      */
     @NotNull <T> List<T> selectMulti(@NotNull Class<T> clazz, @Nullable Condition condition) throws SQLException;
 
     /**
      * Create a table by class
+     *
      * @param clazz the class of the object
      */
     void createTableByClass(@NotNull Class<?> clazz) throws SQLException;
 
     /**
      * Upsert object
-     * @param clazz the class of the object
+     *
+     * @param clazz  the class of the object
      * @param object the object to insert
-     * @param <T> the type
+     * @param <T>    the type
      */
     <T> void insertObject(@NotNull Class<T> clazz, @NotNull T object, boolean upsert) throws SQLException;
 
     /**
      * Update object
-     * @param clazz the class of the object
-     * @param object the object to update
+     *
+     * @param clazz     the class of the object
+     * @param object    the object to update
      * @param condition the condition to update
-     * @param <T> the type
+     * @param <T>       the type
      */
     <T> void updateObject(@NotNull Class<T> clazz, @NotNull T object, @NotNull Condition condition) throws SQLException;
 
@@ -76,13 +82,14 @@ public interface DatabaseConnection {
     void rollback() throws SQLException;
 
     /**
-     * @see DatabaseType
      * @return the database connection.
+     * @see DatabaseType
      */
     @NotNull DatabaseType getType();
 
     /**
      * Set debug mode
+     *
      * @param debug true to enable debug mode, false to turn off debug mode.
      */
     void setDebug(boolean debug);

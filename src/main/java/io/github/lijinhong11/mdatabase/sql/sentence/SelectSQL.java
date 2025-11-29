@@ -13,20 +13,21 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class SelectSQL extends SQL {
-    private boolean distinct = false;
     private final List<String> columns = new ArrayList<>();
-    private String table;
     private final List<JoinClause> joins = new ArrayList<>();
-    private Condition whereCondition;
     private final List<GroupBy> groupByList = new ArrayList<>();
-    private Condition havingCondition;
     private final List<OrderBy> orderByList = new ArrayList<>();
+    private final List<Object> parameters = new ArrayList<>();
+    private boolean distinct = false;
+    private String table;
+    private Condition whereCondition;
+    private Condition havingCondition;
     private Integer limit;
     private Integer offset;
     private boolean forUpdate = false;
-    private final List<Object> parameters = new ArrayList<>();
 
-    SelectSQL() {}
+    SelectSQL() {
+    }
 
     public SelectSQL distinct() {
         this.distinct = true;
@@ -223,7 +224,12 @@ public class SelectSQL extends SQL {
         }
     }
 
-    private record JoinClause(String table, String onClause, JoinType joinType) { }
-    private record GroupBy(String column) { }
-    private record OrderBy(String column, OrderType orderType) { }
+    private record JoinClause(String table, String onClause, JoinType joinType) {
+    }
+
+    private record GroupBy(String column) {
+    }
+
+    private record OrderBy(String column, OrderType orderType) {
+    }
 }

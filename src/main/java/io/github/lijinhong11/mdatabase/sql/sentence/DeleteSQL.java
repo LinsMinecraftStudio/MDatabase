@@ -7,7 +7,8 @@ public class DeleteSQL extends SQL {
     private String table;
     private Condition whereCondition;
 
-    DeleteSQL() {}
+    DeleteSQL() {
+    }
 
     public DeleteSQL from(String table) {
         validateIdentifier(table);

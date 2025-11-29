@@ -2,9 +2,9 @@ package io.github.lijinhong11.mdatabase.impl;
 
 import io.github.lijinhong11.mdatabase.DatabaseConnection;
 import io.github.lijinhong11.mdatabase.enums.DatabaseType;
+import io.github.lijinhong11.mdatabase.serialization.ObjectSerializer;
 import io.github.lijinhong11.mdatabase.serialization.annotations.AutoIncrement;
 import io.github.lijinhong11.mdatabase.serialization.annotations.Column;
-import io.github.lijinhong11.mdatabase.serialization.ObjectSerializer;
 import io.github.lijinhong11.mdatabase.serialization.annotations.PrimaryKey;
 import io.github.lijinhong11.mdatabase.serialization.annotations.Table;
 import io.github.lijinhong11.mdatabase.sql.conditions.Condition;

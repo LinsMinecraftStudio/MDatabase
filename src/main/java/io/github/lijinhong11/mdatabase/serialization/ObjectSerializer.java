@@ -1,10 +1,10 @@
 package io.github.lijinhong11.mdatabase.serialization;
 
+import io.github.lijinhong11.mdatabase.exceptions.CannotInstanceException;
+import io.github.lijinhong11.mdatabase.exceptions.SerializationException;
 import io.github.lijinhong11.mdatabase.serialization.annotations.Column;
 import io.github.lijinhong11.mdatabase.serialization.annotations.Converter;
 import io.github.lijinhong11.mdatabase.serialization.converters.UUIDConverter;
-import io.github.lijinhong11.mdatabase.serialization.exceptions.CannotInstanceException;
-import io.github.lijinhong11.mdatabase.serialization.exceptions.SerializationException;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
@@ -23,10 +23,11 @@ public class ObjectSerializer {
     private static final Map<Class<?>, ObjectConverter<?>> CONVERTERS = new ConcurrentHashMap<>();
     private static final Map<Class<?>, List<Field>> FIELD_CACHE = new ConcurrentHashMap<>();
 
-    private ObjectSerializer() {}
-
     static {
         registerConverter(UUID.class, new UUIDConverter());
+    }
+
+    private ObjectSerializer() {
     }
 
     public static <T> void registerConverter(Class<T> clazz, ObjectConverter<T> converter) {
@@ -163,7 +164,7 @@ public class ObjectSerializer {
             return set.getBytes(columnName);
         } else if (type.isEnum()) {
             String value = set.getString(columnName);
-            return value != null ? Enum.valueOf((Class<? extends Enum>)type, value) : null;
+            return value != null ? Enum.valueOf((Class<? extends Enum>) type, value) : null;
         } else {
             ObjectConverter<?> converter = CONVERTERS.get(type);
             if (converter != null) {

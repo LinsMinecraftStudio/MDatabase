@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AlterTableSQL extends SQL {
-    private String tableName;
     private final List<AlterOperation> operations = new ArrayList<>();
+    private String tableName;
 
     AlterTableSQL() {
     }
@@ -27,7 +27,7 @@ public class AlterTableSQL extends SQL {
     }
 
     public AlterTableSQL addColumn(String columnName, String dataType, boolean notNull, String defaultValue,
-            String position) {
+                                   String position) {
         validateIdentifier(columnName);
         operations.add(
                 new AlterOperation(OperationType.ADD_COLUMN, columnName, dataType, notNull, defaultValue, position));
@@ -49,7 +49,7 @@ public class AlterTableSQL extends SQL {
     }
 
     public AlterTableSQL modifyColumn(String columnName, String newDataType, boolean notNull, String defaultValue,
-            String position) {
+                                      String position) {
         validateIdentifier(columnName);
         if (position != null && !position.equals("FIRST") && !position.startsWith("AFTER ")) {
             validateIdentifier(position);
@@ -100,7 +100,7 @@ public class AlterTableSQL extends SQL {
     }
 
     public AlterTableSQL addForeignKey(String columnName, String referenceTable, String referenceColumn,
-            String constraintName) {
+                                       String constraintName) {
         validateIdentifier(columnName);
         validateIdentifier(referenceTable);
         validateIdentifier(referenceColumn);
@@ -337,22 +337,7 @@ public class AlterTableSQL extends SQL {
         DROP_UNIQUE
     }
 
-    private static class AlterOperation {
-        final OperationType type;
-        final String columnName;
-        final String dataType;
-        final boolean notNull;
-        final String defaultValue;
-        final String extraInfo;
-
-        AlterOperation(OperationType type, String columnName, String dataType, boolean notNull,
-                String defaultValue, String extraInfo) {
-            this.type = type;
-            this.columnName = columnName;
-            this.dataType = dataType;
-            this.notNull = notNull;
-            this.defaultValue = defaultValue;
-            this.extraInfo = extraInfo;
-        }
+    private record AlterOperation(OperationType type, String columnName, String dataType, boolean notNull,
+                                  String defaultValue, String extraInfo) {
     }
 }

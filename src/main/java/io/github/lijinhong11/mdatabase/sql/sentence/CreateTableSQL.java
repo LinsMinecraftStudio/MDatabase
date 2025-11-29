@@ -5,7 +5,10 @@ import io.github.lijinhong11.mdatabase.enums.DatabaseType;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class CreateTableSQL extends SQL {
@@ -19,7 +22,8 @@ public class CreateTableSQL extends SQL {
     private boolean ifNotExists;
     private String tableOptions;
 
-    CreateTableSQL() {}
+    CreateTableSQL() {
+    }
 
     public CreateTableSQL table(String tableName) {
         validateIdentifier(tableName);

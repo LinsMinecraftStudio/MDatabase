@@ -7,7 +7,7 @@ import java.util.List;
 public class Conditions {
     /**
      * Create an equality condition (column = value)
-     * 
+     *
      * @param column the column name
      * @param value  the value to compare
      * @return a Condition representing the equality comparison
@@ -18,7 +18,7 @@ public class Conditions {
 
     /**
      * Create a not-equal condition (column <> value)
-     * 
+     *
      * @param column the column name
      * @param value  the value to compare
      * @return a Condition representing the not-equal comparison
@@ -29,7 +29,7 @@ public class Conditions {
 
     /**
      * Create a greater-than condition (column > value)
-     * 
+     *
      * @param column the column name
      * @param value  the value to compare
      * @return a Condition representing the greater-than comparison
@@ -40,7 +40,7 @@ public class Conditions {
 
     /**
      * Create a less-than condition (column < value)
-     * 
+     *
      * @param column the column name
      * @param value  the value to compare
      * @return a Condition representing the less-than comparison
@@ -51,7 +51,7 @@ public class Conditions {
 
     /**
      * Create a LIKE condition (column LIKE pattern)
-     * 
+     *
      * @param column  the column name
      * @param pattern the LIKE pattern (supports % and _ wildcards)
      * @return a Condition representing the LIKE comparison
@@ -62,7 +62,7 @@ public class Conditions {
 
     /**
      * Create an IS NULL condition (column IS NULL)
-     * 
+     *
      * @param column the column name
      * @return a Condition representing the IS NULL check
      */
@@ -72,7 +72,7 @@ public class Conditions {
 
     /**
      * Create an IS NOT NULL condition (column IS NOT NULL)
-     * 
+     *
      * @param column the column name
      * @return a Condition representing the IS NOT NULL check
      */
@@ -82,7 +82,7 @@ public class Conditions {
 
     /**
      * Combine multiple conditions with AND operator
-     * 
+     *
      * @param ands the conditions to combine with AND
      * @return a Condition representing the AND combination of all conditions
      */
@@ -92,7 +92,7 @@ public class Conditions {
 
     /**
      * Combine multiple conditions with OR operator
-     * 
+     *
      * @param ors the conditions to combine with OR
      * @return a Condition representing the OR combination of all conditions
      */
@@ -102,7 +102,7 @@ public class Conditions {
 
     /**
      * Create an IN condition (column IN (value1, value2, ...))
-     * 
+     *
      * @param column the column name
      * @param values the list of values to check against
      * @return a Condition representing the IN clause
@@ -114,7 +114,7 @@ public class Conditions {
 
     /**
      * Create a NOT IN condition (column NOT IN (value1, value2, ...))
-     * 
+     *
      * @param column the column name
      * @param values the list of values to check against
      * @return a Condition representing the NOT IN clause
@@ -126,7 +126,7 @@ public class Conditions {
 
     /**
      * Create a BETWEEN condition (column BETWEEN lower AND upper)
-     * 
+     *
      * @param column the column name
      * @param lower  the lower bound (inclusive)
      * @param upper  the upper bound (inclusive)

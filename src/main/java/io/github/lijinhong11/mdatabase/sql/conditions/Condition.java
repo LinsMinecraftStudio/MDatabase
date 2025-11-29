@@ -4,6 +4,7 @@ import java.util.List;
 
 public interface Condition {
     String getSql();
+
     List<Object> getParameters();
 }
 

@@ -14,7 +14,8 @@ public class UpdateSQL extends SQL {
     private String table;
     private Condition whereCondition;
 
-    UpdateSQL() {}
+    UpdateSQL() {
+    }
 
     public UpdateSQL table(String table) {
         validateIdentifier(table);

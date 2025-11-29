@@ -1,4 +1,4 @@
-package io.github.lijinhong11.mdatabase.serialization.exceptions;
+package io.github.lijinhong11.mdatabase.exceptions;
 
 public class CannotInstanceException extends RuntimeException {
     public CannotInstanceException(Class<?> clazz, Throwable cause) {
