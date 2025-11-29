@@ -204,7 +204,6 @@ abstract class AbstractSQLConnection implements DatabaseConnection {
                     throw new RuntimeException(e);
                 }
 
-                // 只有 upsert 时，且是 SQLite 或 PostgreSQL，自动收集主键冲突字段
                 if (upsert && (getType() == DatabaseType.SQLITE || getType() == DatabaseType.POSTGRESQL)) {
                     boolean isPrimary = f.isAnnotationPresent(PrimaryKey.class);
                     if (isPrimary) {
