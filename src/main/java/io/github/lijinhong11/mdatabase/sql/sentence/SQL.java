@@ -12,36 +12,114 @@ public abstract class SQL {
     protected final StringBuilder sqlBuilder = new StringBuilder();
     protected final List<Object> parameters = new ArrayList<>();
 
+    /**
+     * Create a SELECT SQL builder
+     * 
+     * @return a new SelectSQL instance
+     */
     public static SelectSQL select() {
         return new SelectSQL();
     }
 
+    /**
+     * Create an INSERT SQL builder
+     * 
+     * @return a new InsertSQL instance
+     */
     public static InsertSQL insert() {
         return new InsertSQL(false);
     }
 
+    /**
+     * Create an UPSERT (INSERT ... ON DUPLICATE KEY UPDATE / ON CONFLICT) SQL
+     * builder
+     * 
+     * @return a new InsertSQL instance configured for upsert operations
+     */
     public static InsertSQL upsert() {
         return new InsertSQL(true);
     }
 
+    /**
+     * Create an UPDATE SQL builder
+     * 
+     * @return a new UpdateSQL instance
+     */
     public static UpdateSQL update() {
         return new UpdateSQL();
     }
 
+    /**
+     * Create a DELETE SQL builder
+     * 
+     * @return a new DeleteSQL instance
+     */
     public static DeleteSQL delete() {
         return new DeleteSQL();
     }
 
+    /**
+     * Create a DROP SQL builder for dropping tables, indexes, or views
+     * 
+     * @return a new DropSQL instance
+     */
     public static DropSQL drop() {
         return new DropSQL();
     }
 
+    /**
+     * Create a CREATE TABLE SQL builder
+     * 
+     * @return a new CreateTableSQL instance
+     */
     public static CreateTableSQL createTable() {
         return new CreateTableSQL();
     }
 
-    abstract String getSql(DatabaseType type);
+    /**
+     * Create an ALTER TABLE SQL builder
+     * 
+     * @return a new AlterTableSQL instance
+     */
+    public static AlterTableSQL alterTable() {
+        return new AlterTableSQL();
+    }
 
+    /**
+     * Create a CREATE INDEX SQL builder
+     * 
+     * @return a new CreateIndexSQL instance
+     */
+    public static CreateIndexSQL createIndex() {
+        return new CreateIndexSQL();
+    }
+
+    /**
+     * Create a CREATE VIEW SQL builder
+     * 
+     * @return a new CreateViewSQL instance
+     */
+    public static CreateViewSQL createView() {
+        return new CreateViewSQL();
+    }
+
+    /**
+     * Create a TRUNCATE TABLE SQL builder
+     * 
+     * @return a new TruncateSQL instance
+     */
+    public static TruncateSQL truncate() {
+        return new TruncateSQL();
+    }
+
+    /**
+     * Build a PreparedStatement from this SQL builder
+     * 
+     * @param connection the database connection
+     * @param type       the database type
+     * @return a PreparedStatement with parameters set
+     * @throws SQLException if a database access error occurs
+     */
     public PreparedStatement build(Connection connection, DatabaseType type) throws SQLException {
         parameters.clear();
         String sql = getSql(type);
@@ -68,6 +146,8 @@ public abstract class SQL {
         }
         return count;
     }
+
+    abstract String getSql(DatabaseType type);
 
     void validateIdentifier(String identifier) {
         if (!identifier.matches("[a-zA-Z_][a-zA-Z0-9_]*")) {

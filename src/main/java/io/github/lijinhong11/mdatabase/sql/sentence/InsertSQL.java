@@ -34,9 +34,6 @@ public class InsertSQL extends SQL {
         return this;
     }
 
-    /**
-     * 设置冲突字段（如主键或唯一键），仅用于 SQLite / PostgreSQL。
-     */
     public InsertSQL conflictKeys(String... keys) {
         this.conflictKeys = Arrays.asList(keys);
         return this;
@@ -60,7 +57,7 @@ public class InsertSQL extends SQL {
 
         if (!upsert) {
             appendWhere();
-            return sqlBuilder.toString(); // 普通插入
+            return sqlBuilder.toString();
         }
 
         switch (type) {

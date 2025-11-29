@@ -7,9 +7,11 @@ public class DropSQL extends SQL {
     private boolean ifExists;
     private boolean isTable;
     private boolean isIndex;
-    private String tableName; // 仅用于 DROP INDEX
+    private boolean isView;
+    private String tableName;
 
-    DropSQL() {}
+    DropSQL() {
+    }
 
     private DropSQL name(String name) {
         validateIdentifier(name);
@@ -25,13 +27,22 @@ public class DropSQL extends SQL {
     public DropSQL table(String tableName) {
         this.isTable = true;
         this.isIndex = false;
+        this.isView = false;
         return name(tableName);
     }
 
     public DropSQL index(String indexName) {
         this.isTable = false;
         this.isIndex = true;
+        this.isView = false;
         return name(indexName);
+    }
+
+    public DropSQL view(String viewName) {
+        this.isTable = false;
+        this.isIndex = false;
+        this.isView = true;
+        return name(viewName);
     }
 
     public DropSQL fromTable(String tableName) {
@@ -48,8 +59,10 @@ public class DropSQL extends SQL {
             buildDropTable();
         } else if (isIndex) {
             buildDropIndex();
+        } else if (isView) {
+            buildDropView();
         } else {
-            throw new IllegalStateException("Neither table nor index specified");
+            throw new IllegalStateException("Neither table, index nor view specified");
         }
 
         return sqlBuilder.toString();
@@ -69,6 +82,12 @@ public class DropSQL extends SQL {
         if (tableName != null) {
             sqlBuilder.append(" ON ").append(tableName);
         }
+    }
+
+    private void buildDropView() {
+        sqlBuilder.append("DROP VIEW ");
+        appendIfExists();
+        sqlBuilder.append(name);
     }
 
     private void appendIfExists() {
