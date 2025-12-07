@@ -22,7 +22,7 @@ import java.util.Objects;
 import java.util.logging.Logger;
 
 abstract class AbstractSQLConnection implements DatabaseConnection {
-    private static final Logger LOGGER = Logger.getLogger("MXDatabase");
+    private static final Logger LOGGER = Logger.getLogger("MDatabase");
 
     private boolean debug = false;
 
