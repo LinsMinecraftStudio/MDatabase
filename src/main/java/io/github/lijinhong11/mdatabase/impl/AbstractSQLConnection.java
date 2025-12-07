@@ -113,20 +113,6 @@ abstract class AbstractSQLConnection implements DatabaseConnection {
     }
 
     @Override
-    public void rollback() throws SQLException {
-        try (Connection connection = getConnection()) {
-            connection.rollback();
-        }
-    }
-
-    @Override
-    public void commit() throws SQLException {
-        try (Connection connection = getConnection()) {
-            connection.commit();
-        }
-    }
-
-    @Override
     public void createTableByClass(@NotNull Class<?> clazz) throws SQLException {
         if (!clazz.isAnnotationPresent(Table.class)) {
             throw new IllegalArgumentException("the class must be annotated with @Table");

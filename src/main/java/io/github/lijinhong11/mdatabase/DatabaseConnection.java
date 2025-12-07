@@ -77,10 +77,6 @@ public interface DatabaseConnection {
 
     boolean ping() throws SQLException;
 
-    void commit() throws SQLException;
-
-    void rollback() throws SQLException;
-
     /**
      * @return the database connection.
      * @see DatabaseType

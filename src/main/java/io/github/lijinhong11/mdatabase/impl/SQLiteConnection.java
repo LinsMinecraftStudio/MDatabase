@@ -20,13 +20,14 @@ class SQLiteConnection extends AbstractSQLConnection {
             throw new IllegalArgumentException("the absolute path of database file cannot be null or blank");
         }
 
-        HikariConfig config = new HikariConfig();
-        config.setJdbcUrl(String.format(JDBC_URL_FORMAT, absolutePath));
-        config.setDriverClassName(JDBC_DRIVER_CLASS_NAME);
-        config.setIdleTimeout(parameters.getIdleTimeout());
-        config.setMaximumPoolSize(parameters.getMaxPoolSize());
-        config.setAutoCommit(true);
-        dataSource = new HikariDataSource(config);
+        HikariConfig cfg = new HikariConfig();
+        cfg.setJdbcUrl(String.format(JDBC_URL_FORMAT, absolutePath));
+        cfg.setDriverClassName(JDBC_DRIVER_CLASS_NAME);
+        cfg.setIdleTimeout(parameters.getIdleTimeout());
+        cfg.setMaximumPoolSize(parameters.getMaxPoolSize());
+        cfg.setAutoCommit(true);
+        cfg.setKeepaliveTime(parameters.getMaxKeepAlive());
+        dataSource = new HikariDataSource(cfg);
     }
 
     @Override

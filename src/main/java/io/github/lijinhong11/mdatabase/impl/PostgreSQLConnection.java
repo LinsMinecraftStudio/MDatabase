@@ -24,6 +24,7 @@ public class PostgreSQLConnection extends AbstractSQLConnection {
         cfg.setMaximumPoolSize(parameters.getMaxPoolSize());
         cfg.setAutoCommit(true);
         cfg.setIdleTimeout(parameters.getIdleTimeout());
+        cfg.setKeepaliveTime(parameters.getMaxKeepAlive());
         try (HikariDataSource dataSource = new HikariDataSource(cfg)) {
             this.dataSource = dataSource;
         }
