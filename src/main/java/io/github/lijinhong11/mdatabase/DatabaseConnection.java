@@ -16,6 +16,21 @@ public interface DatabaseConnection {
 
     boolean execute(SQL sql) throws SQLException;
 
+    /**
+     * Run multiple SQL sentences in one connection
+     *
+     * @param sqls the sql sentences
+     * @throws SQLException when SQL occurs errors
+     */
+    void workspace(SQL... sqls) throws SQLException;
+
+    /**
+     * Query a object
+     *
+     * @param sql the <code>SELECT</code> sql sentence
+     * @return a result set
+     * @throws SQLException when SQL occurs errors
+     */
     ResultSet query(SelectSQL sql) throws SQLException;
 
     /**

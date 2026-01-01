@@ -42,6 +42,15 @@ abstract class AbstractSQLConnection implements DatabaseConnection {
     }
 
     @Override
+    public void workspace(SQL... sqls) throws SQLException {
+        try (Connection connection = getConnection()) {
+            for (SQL sql : sqls) {
+                sql.build(connection, getType()).execute();
+            }
+        }
+    }
+
+    @Override
     public ResultSet query(SelectSQL sql) throws SQLException {
         try (Connection connection = getConnection()) {
             return sql.build(connection, getType()).executeQuery();
