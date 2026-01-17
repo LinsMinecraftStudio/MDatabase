@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class SelectSQL extends SQL {
+public final class SelectSQL extends SQL {
     private final List<String> columns = new ArrayList<>();
     private final List<JoinClause> joins = new ArrayList<>();
     private final List<GroupBy> groupByList = new ArrayList<>();

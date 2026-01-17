@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-class SQLiteConnection extends AbstractSQLConnection {
+class SQLiteConnection extends AbstractDatabaseConnection {
     private static final String JDBC_URL_FORMAT = "jdbc:sqlite:%s";
     private static final String JDBC_DRIVER_CLASS_NAME = "org.sqlite.JDBC";
 

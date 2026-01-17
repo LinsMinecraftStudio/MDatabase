@@ -5,7 +5,7 @@ import io.github.lijinhong11.mdatabase.enums.DatabaseType;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AlterTableSQL extends SQL {
+public final class AlterTableSQL extends SQL {
     private final List<AlterOperation> operations = new ArrayList<>();
     private String tableName;
 

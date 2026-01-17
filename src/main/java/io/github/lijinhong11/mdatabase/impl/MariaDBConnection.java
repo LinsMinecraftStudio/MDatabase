@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-class MariaDBConnection extends AbstractSQLConnection {
+class MariaDBConnection extends AbstractDatabaseConnection {
     private static final String JDBC_URL_FORMAT = "jdbc:mariadb://%s:%d/%s?useSSL=false&serverTimezone=UTC";
     private static final String JDBC_DRIVER_CLASS_NAME = "org.mariadb.jdbc.Driver";
 

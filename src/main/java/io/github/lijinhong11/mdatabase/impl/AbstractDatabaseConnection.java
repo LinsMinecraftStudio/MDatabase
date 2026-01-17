@@ -2,6 +2,7 @@ package io.github.lijinhong11.mdatabase.impl;
 
 import io.github.lijinhong11.mdatabase.DatabaseConnection;
 import io.github.lijinhong11.mdatabase.enums.DatabaseType;
+import io.github.lijinhong11.mdatabase.exceptions.WrongTypeException;
 import io.github.lijinhong11.mdatabase.serialization.ObjectSerializer;
 import io.github.lijinhong11.mdatabase.serialization.annotations.AutoIncrement;
 import io.github.lijinhong11.mdatabase.serialization.annotations.Column;
@@ -21,7 +22,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.logging.Logger;
 
-abstract class AbstractSQLConnection implements DatabaseConnection {
+abstract class AbstractDatabaseConnection implements DatabaseConnection {
     private static final Logger LOGGER = Logger.getLogger("MDatabase");
 
     private boolean debug = false;
@@ -35,14 +36,14 @@ abstract class AbstractSQLConnection implements DatabaseConnection {
     public abstract void close();
 
     @Override
-    public boolean execute(SQL sql) throws SQLException {
+    public boolean execute(@NotNull SQL sql) throws SQLException {
         try (Connection connection = getConnection()) {
             return sql.build(connection, getType()).execute();
         }
     }
 
     @Override
-    public void workspace(SQL... sqls) throws SQLException {
+    public void workspace(@NotNull SQL @NotNull ... sqls) throws SQLException {
         try (Connection connection = getConnection()) {
             for (SQL sql : sqls) {
                 sql.build(connection, getType()).execute();
@@ -51,14 +52,14 @@ abstract class AbstractSQLConnection implements DatabaseConnection {
     }
 
     @Override
-    public ResultSet query(SelectSQL sql) throws SQLException {
+    public @NotNull ResultSet query(@NotNull SelectSQL sql) throws SQLException {
         try (Connection connection = getConnection()) {
             return sql.build(connection, getType()).executeQuery();
         }
     }
 
     @Override
-    public <T> @NotNull T selectOne(Class<T> clazz, @NotNull Condition condition) throws SQLException {
+    public <T> @NotNull T selectOne(@NotNull Class<T> clazz, @NotNull Condition condition) throws SQLException {
         if (!clazz.isAnnotationPresent(Table.class)) {
             throw new IllegalArgumentException("the class must be annotated with @Table");
         }
@@ -136,6 +137,10 @@ abstract class AbstractSQLConnection implements DatabaseConnection {
 
         CreateTableSQL sql = SQL.createTable().table(table.name()).ifNotExists();
 
+        if (!table.engine().isBlank()) {
+            sql.options("ENGINE=" + table.engine());
+        }
+
         for (Field f : field) {
             if (f.isAnnotationPresent(Column.class)) {
                 Column column = f.getAnnotation(Column.class);
@@ -148,6 +153,9 @@ abstract class AbstractSQLConnection implements DatabaseConnection {
                     sql.column(columnName, sqlType);
 
                     if (f.isAnnotationPresent(AutoIncrement.class)) {
+                        if (!type.isAssignableFrom(Number.class)) {
+                            throw new WrongTypeException("Class " + type.getClass() + "isn't incrementable");
+                        }
                         sql.autoIncrement(columnName);
                     }
 

@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class CreateTableSQL extends SQL {
+public final class CreateTableSQL extends SQL {
     private final Map<String, ColumnDefinition> columns = new LinkedHashMap<>();
     private final List<ForeignKey> foreignKeys = new ArrayList<>();
     private final List<String> uniqueConstraints = new ArrayList<>();

@@ -3,7 +3,7 @@ package io.github.lijinhong11.mdatabase.sql.sentence;
 import io.github.lijinhong11.mdatabase.enums.DatabaseType;
 import io.github.lijinhong11.mdatabase.sql.conditions.Condition;
 
-public class DeleteSQL extends SQL {
+public final class DeleteSQL extends SQL {
     private String table;
     private Condition whereCondition;
 

@@ -1,9 +1,11 @@
 package io.github.lijinhong11.mdatabase.serialization;
 
-public interface ObjectConverter<T> {
-    T convert(Object o);
+import org.jetbrains.annotations.Nullable;
 
-    Object convertBack(Object t);
+public interface ObjectConverter<T> {
+    @Nullable T convert(@Nullable Object o);
+
+    Object convertBack(T t);
 
     String getSqlType();
 }

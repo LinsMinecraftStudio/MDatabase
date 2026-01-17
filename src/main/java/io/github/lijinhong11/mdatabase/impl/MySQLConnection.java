@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-class MySQLConnection extends AbstractSQLConnection {
+class MySQLConnection extends AbstractDatabaseConnection {
     private static final String JDBC_URL_FORMAT = "jdbc:mysql://%s:%d/%s?useSSL=false&serverTimezone=UTC";
     private static final String JDBC_DRIVER_CLASS_NAME = "com.mysql.cj.jdbc.Driver";
 

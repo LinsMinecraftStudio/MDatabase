@@ -2,7 +2,7 @@ package io.github.lijinhong11.mdatabase.sql.sentence;
 
 import io.github.lijinhong11.mdatabase.enums.DatabaseType;
 
-public class DropSQL extends SQL {
+public final class DropSQL extends SQL {
     private String name;
     private boolean ifExists;
     private boolean isTable;

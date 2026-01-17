@@ -2,7 +2,7 @@ package io.github.lijinhong11.mdatabase.sql.sentence;
 
 import io.github.lijinhong11.mdatabase.enums.DatabaseType;
 
-public class CreateViewSQL extends SQL {
+public final class CreateViewSQL extends SQL {
     private String viewName;
     private String selectQuery;
     private SelectSQL selectSQL;

@@ -2,7 +2,7 @@ package io.github.lijinhong11.mdatabase.sql.sentence;
 
 import io.github.lijinhong11.mdatabase.enums.DatabaseType;
 
-public class TruncateSQL extends SQL {
+public final class TruncateSQL extends SQL {
     private String tableName;
     private boolean restartIdentity;
     private boolean cascade;

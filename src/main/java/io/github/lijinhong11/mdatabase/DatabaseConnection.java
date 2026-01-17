@@ -14,7 +14,7 @@ import java.util.List;
 public interface DatabaseConnection {
     void close() throws SQLException;
 
-    boolean execute(SQL sql) throws SQLException;
+    boolean execute(@NotNull SQL sql) throws SQLException;
 
     /**
      * Run multiple SQL sentences in one connection
@@ -22,7 +22,7 @@ public interface DatabaseConnection {
      * @param sqls the sql sentences
      * @throws SQLException when SQL occurs errors
      */
-    void workspace(SQL... sqls) throws SQLException;
+    void workspace(@NotNull SQL... sqls) throws SQLException;
 
     /**
      * Query a object
@@ -31,7 +31,7 @@ public interface DatabaseConnection {
      * @return a result set
      * @throws SQLException when SQL occurs errors
      */
-    ResultSet query(SelectSQL sql) throws SQLException;
+    @NotNull ResultSet query(@NotNull SelectSQL sql) throws SQLException;
 
     /**
      * Select one object
@@ -41,7 +41,7 @@ public interface DatabaseConnection {
      * @param <T>       the type
      * @return the object
      */
-    @NotNull <T> T selectOne(Class<T> clazz, @NotNull Condition condition) throws SQLException;
+    @NotNull <T> T selectOne(@NotNull Class<T> clazz, @NotNull Condition condition) throws SQLException;
 
     /**
      * Select multiple objects

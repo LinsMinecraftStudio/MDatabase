@@ -8,7 +8,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class UpdateSQL extends SQL {
+public final class UpdateSQL extends SQL {
     private final Map<String, Object> updates = new LinkedHashMap<>();
 
     private String table;

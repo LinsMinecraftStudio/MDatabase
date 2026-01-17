@@ -9,7 +9,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class SQL {
+/**
+ * The parent class of SQL sentence implementations
+ */
+public sealed abstract class SQL permits AlterTableSQL, CreateIndexSQL, CreateTableSQL, CreateViewSQL, DeleteSQL, DropSQL, InsertSQL, SelectSQL, TruncateSQL, UpdateSQL {
     protected final StringBuilder sqlBuilder = new StringBuilder();
     protected final List<Object> parameters = new ArrayList<>();
 

@@ -6,7 +6,7 @@ import io.github.lijinhong11.mdatabase.sql.conditions.Condition;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class InsertSQL extends SQL {
+public final class InsertSQL extends SQL {
     private final Map<String, Object> values = new LinkedHashMap<>();
     private final boolean upsert;
     private String table;

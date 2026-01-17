@@ -5,7 +5,7 @@ import io.github.lijinhong11.mdatabase.enums.DatabaseType;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CreateIndexSQL extends SQL {
+public final class CreateIndexSQL extends SQL {
     private final List<String> columns = new ArrayList<>();
     private String indexName;
     private String tableName;

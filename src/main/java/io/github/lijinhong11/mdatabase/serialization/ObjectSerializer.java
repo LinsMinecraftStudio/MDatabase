@@ -1,9 +1,10 @@
 package io.github.lijinhong11.mdatabase.serialization;
 
-import io.github.lijinhong11.mdatabase.exceptions.CannotInstanceException;
+import io.github.lijinhong11.mdatabase.exceptions.InstantiationFailedException;
 import io.github.lijinhong11.mdatabase.exceptions.SerializationException;
 import io.github.lijinhong11.mdatabase.serialization.annotations.Column;
 import io.github.lijinhong11.mdatabase.serialization.annotations.Converter;
+import io.github.lijinhong11.mdatabase.serialization.converters.LocaleConverter;
 import io.github.lijinhong11.mdatabase.serialization.converters.UUIDConverter;
 import org.jetbrains.annotations.Nullable;
 
@@ -12,10 +13,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.math.BigDecimal;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.sql.Date;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 @SuppressWarnings({"unchecked", "rawtypes"})
@@ -25,6 +24,7 @@ public class ObjectSerializer {
 
     static {
         registerConverter(UUID.class, new UUIDConverter());
+        registerConverter(Locale.class, new LocaleConverter());
     }
 
     private ObjectSerializer() {
@@ -50,7 +50,7 @@ public class ObjectSerializer {
             }
             return obj;
         } catch (Exception e) {
-            throw new CannotInstanceException(clazz, e);
+            throw new InstantiationFailedException(clazz, e);
         }
     }
 
@@ -66,15 +66,15 @@ public class ObjectSerializer {
         return list;
     }
 
-    public static Object convertBack(Object obj) {
+    public static <T> Object convertBack(T obj) {
         if (obj == null) {
             return null;
         }
 
-        return convertBack(obj, obj.getClass());
+        return convertBack(obj, (Class<T>) obj.getClass());
     }
 
-    public static Object convertBack(Object obj, Class<?> clazz) {
+    public static <T> Object convertBack(T obj, Class<T> clazz) {
         if (obj == null) {
             return null;
         }
@@ -84,7 +84,7 @@ public class ObjectSerializer {
         }
 
         if (CONVERTERS.containsKey(clazz)) {
-            return CONVERTERS.get(clazz).convertBack(obj);
+            return ((ObjectConverter<T>) CONVERTERS.get(clazz)).convertBack(obj);
         }
 
         return obj;
