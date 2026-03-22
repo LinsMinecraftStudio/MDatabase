@@ -17,10 +17,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class ObjectSerializerTest {
     private static void printBytes(String label, byte[] bytes) {
@@ -254,7 +251,7 @@ class ObjectSerializerTest {
         assertEquals("cat", restoredObjects.get(0).whatIsThat);
         assertTrue(restoredObjects.get(0).living);
         assertEquals("stone", restoredObjects.get(1).whatIsThat);
-        assertEquals(false, restoredObjects.get(1).living);
+        assertFalse(restoredObjects.get(1).living);
         assertEquals("tree", entity.anotherOne.whatIsThat);
         assertTrue(entity.anotherOne.living);
     }
