@@ -21,13 +21,8 @@ class MariaDBConnection extends AbstractDatabaseConnection {
         cfg.setDriverClassName(JDBC_DRIVER_CLASS_NAME);
         cfg.setUsername(username);
         cfg.setPassword(password);
-        cfg.setMaximumPoolSize(parameters.getMaxPoolSize());
-        cfg.setAutoCommit(true);
-        cfg.setIdleTimeout(parameters.getIdleTimeout());
-        cfg.setKeepaliveTime(parameters.getMaxKeepAlive());
-        try (HikariDataSource dataSource = new HikariDataSource(cfg)) {
-            this.dataSource = dataSource;
-        }
+        parameters.applyTo(cfg);
+        this.dataSource = new HikariDataSource(cfg);
     }
 
     @Override

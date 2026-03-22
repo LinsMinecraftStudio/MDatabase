@@ -6,7 +6,7 @@ import java.util.List;
 
 public class Conditions {
     /**
-     * Create an equality condition (column = value)
+     * Create an equality condition
      *
      * @param column the column name
      * @param value  the value to compare
@@ -17,7 +17,7 @@ public class Conditions {
     }
 
     /**
-     * Create a not-equal condition (column <> value)
+     * Create a not-equal condition
      *
      * @param column the column name
      * @param value  the value to compare
@@ -28,7 +28,7 @@ public class Conditions {
     }
 
     /**
-     * Create a greater-than condition (column > value)
+     * Create a greater-than condition
      *
      * @param column the column name
      * @param value  the value to compare
@@ -39,7 +39,7 @@ public class Conditions {
     }
 
     /**
-     * Create a less-than condition (column < value)
+     * Create a less-than condition
      *
      * @param column the column name
      * @param value  the value to compare

@@ -23,10 +23,7 @@ class SQLiteConnection extends AbstractDatabaseConnection {
         HikariConfig cfg = new HikariConfig();
         cfg.setJdbcUrl(String.format(JDBC_URL_FORMAT, absolutePath));
         cfg.setDriverClassName(JDBC_DRIVER_CLASS_NAME);
-        cfg.setIdleTimeout(parameters.getIdleTimeout());
-        cfg.setMaximumPoolSize(parameters.getMaxPoolSize());
-        cfg.setAutoCommit(true);
-        cfg.setKeepaliveTime(parameters.getMaxKeepAlive());
+        parameters.applyTo(cfg);
         dataSource = new HikariDataSource(cfg);
     }
 
