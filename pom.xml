@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.github.lijinhong11</groupId>
-    <version>1.1.0</version>
+    <version>1.1.1</version>
     <artifactId>MDatabase</artifactId>
     <name>MDatabase</name>
     <description>A database library with some ORM features</description>

@@ -44,6 +44,17 @@ public interface DatabaseConnection {
     @NotNull <T> T selectOne(@NotNull Class<T> clazz, @NotNull Condition condition) throws SQLException;
 
     /**
+     * Select one object
+     *
+     * @param table     the table name (for the classes which doesn't @Table
+     * @param clazz     the class of the object
+     * @param condition the condition to select
+     * @param <T>       the type
+     * @return the object
+     */
+    @NotNull <T> T selectOne(@NotNull String table, @NotNull Class<T> clazz, @NotNull Condition condition) throws SQLException;
+
+    /**
      * Select multiple objects
      *
      * @param clazz the class of the object
@@ -55,12 +66,33 @@ public interface DatabaseConnection {
     /**
      * Select multiple objects
      *
+     * @param table the table name (for the classes which doesn't @Table
+     * @param clazz the class of the object
+     * @param <T>   the type
+     * @return a list of objects
+     */
+    @NotNull <T> List<T> selectMulti(@NotNull String table, @NotNull Class<T> clazz) throws SQLException;
+
+    /**
+     * Select multiple objects
+     *
      * @param clazz     the class of the object
      * @param condition the condition to select
      * @param <T>       the type
      * @return a list of objects
      */
     @NotNull <T> List<T> selectMulti(@NotNull Class<T> clazz, @Nullable Condition condition) throws SQLException;
+
+    /**
+     * Select multiple objects
+     *
+     * @param table     the table name (for the classes which doesn't @Table
+     * @param clazz     the class of the object
+     * @param condition the condition to select
+     * @param <T>       the type
+     * @return a list of objects
+     */
+    @NotNull <T> List<T> selectMulti(@NotNull String table, @NotNull Class<T> clazz, @Nullable Condition condition) throws SQLException;
 
     /**
      * Create a table by class

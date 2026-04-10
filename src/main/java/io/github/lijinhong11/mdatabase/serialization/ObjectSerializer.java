@@ -89,7 +89,7 @@ public class ObjectSerializer {
             return null;
         }
 
-        return convertBack(obj, (Type) obj.getClass());
+        return convertBack(obj, obj.getClass());
     }
 
     public static Object convertBack(Object obj, Type type) {
@@ -225,10 +225,6 @@ public class ObjectSerializer {
         return fields;
     }
 
-    public static String getSqlType(Class<?> javaType) {
-        return getSqlType((Type) javaType);
-    }
-
     public static String getSqlType(Type javaType) {
         Class<?> rawType = getRawType(javaType);
         if (rawType == String.class)
@@ -246,7 +242,7 @@ public class ObjectSerializer {
         if (rawType == Date.class || rawType == Timestamp.class)
             return "DATETIME";
         if (rawType == BigDecimal.class)
-            return "DECIMAL(18,6)";
+            return "DECIMAL(20,7)";
         if (rawType.isEnum())
             return "VARCHAR(100)";
         if (rawType.isArray())

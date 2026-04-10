@@ -84,7 +84,33 @@ abstract class AbstractDatabaseConnection implements DatabaseConnection {
     }
 
     @Override
+    public <T> @NotNull T selectOne(@NotNull String table, @NotNull Class<T> clazz, @NotNull Condition condition) throws SQLException {
+        if (!clazz.isAnnotationPresent(Table.class)) {
+            throw new IllegalArgumentException("the class must be annotated with @Table");
+        }
+
+        SelectSQL sql = SQL.select()
+                .allColumns()
+                .from(table)
+                .where(condition)
+                .limit(1);
+
+        if (debug) {
+            LOGGER.info("Invoking SQL: " + sql.getSql(getType()));
+        }
+
+        ResultSet query = query(sql);
+        return ObjectSerializer.serializeOne(clazz, query);
+    }
+
+
+    @Override
     public <T> @NotNull List<T> selectMulti(@NotNull Class<T> clazz) throws SQLException {
+        return selectMulti(clazz, null);
+    }
+
+    @Override
+    public <T> @NotNull List<T> selectMulti(@NotNull String table, @NotNull Class<T> clazz) throws SQLException {
         return selectMulti(clazz, null);
     }
 
@@ -102,6 +128,28 @@ abstract class AbstractDatabaseConnection implements DatabaseConnection {
         SelectSQL sql = SQL.select()
                 .allColumns()
                 .from(table.name());
+
+        if (condition != null) {
+            sql.where(condition);
+        }
+
+        if (debug) {
+            LOGGER.info("Invoking SQL: " + sql.getSql(getType()));
+        }
+
+        ResultSet set = query(sql);
+        return ObjectSerializer.serializeMulti(clazz, set);
+    }
+
+    @Override
+    public <T> @NotNull List<T> selectMulti(@NotNull String table, @NotNull Class<T> clazz, @Nullable Condition condition) throws SQLException {
+        if (!clazz.isAnnotationPresent(Table.class)) {
+            throw new IllegalArgumentException("the class must be annotated with @Table");
+        }
+
+        SelectSQL sql = SQL.select()
+                .allColumns()
+                .from(table);
 
         if (condition != null) {
             sql.where(condition);
@@ -154,7 +202,7 @@ abstract class AbstractDatabaseConnection implements DatabaseConnection {
 
                     if (f.isAnnotationPresent(AutoIncrement.class)) {
                         if (!type.isAssignableFrom(Number.class)) {
-                            throw new WrongTypeException("Class " + type.getClass() + "isn't incrementable");
+                            throw new WrongTypeException("Class " + type + "isn't incrementable");
                         }
                         sql.autoIncrement(columnName);
                     }
@@ -221,7 +269,7 @@ abstract class AbstractDatabaseConnection implements DatabaseConnection {
                 throw new IllegalStateException("Upsert requires at least one @PrimaryKey or @Column(primaryKey=true) in " + clazz.getName());
             }
 
-            sql = sql.conflictKeys(conflictKeys.toArray(new String[0]));
+            sql.conflictKeys(conflictKeys.toArray(new String[0]));
         }
 
         if (debug) {
