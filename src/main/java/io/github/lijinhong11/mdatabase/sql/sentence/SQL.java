@@ -10,7 +10,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The parent class of SQL sentence implementations
+ * Sealed base class for all SQL statement builders. Provides static factory methods
+ * for every supported SQL statement type and a shared {@link #build} mechanism
+ * that binds parameters via {@link PreparedStatement}.
+ *
+ * <pre>{@code
+ * SQL.select().allColumns().from("users").where(Conditions.eq("id", 1));
+ * SQL.insert().into("users").value("name", "Alice");
+ * SQL.createTable().table("logs").ifNotExists().column("id", "INTEGER").primaryKey("id");
+ * }</pre>
  */
 public sealed abstract class SQL permits AlterTableSQL, CreateIndexSQL, CreateTableSQL, CreateViewSQL, DeleteSQL, DropSQL, InsertSQL, SelectSQL, TruncateSQL, UpdateSQL {
     protected final StringBuilder sqlBuilder = new StringBuilder();

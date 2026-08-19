@@ -8,6 +8,12 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 
+/**
+ * Static factory for creating {@link DatabaseConnection} instances.
+ * <pre>{@code
+ * var conn = DatabaseConnections.sqlite("mydb.db", new DatabaseParameters());
+ * }</pre>
+ */
 public final class DatabaseConnections {
     private DatabaseConnections() {
     }
@@ -65,7 +71,7 @@ public final class DatabaseConnections {
     }
 
     /**
-     * Create a MySQL database connection
+     * Create a MySQL database connection using the bundled MariaDB driver.
      *
      * @param host       the database host address
      * @param port       the database port number
@@ -77,11 +83,11 @@ public final class DatabaseConnections {
      */
     public static DatabaseConnection mysql(String host, int port, String database, String username, String password,
                                            DatabaseParameters parameters) {
-        return new MySQLConnection(host, port, database, username, password, parameters);
+        return new MariaDBConnection(DatabaseType.MYSQL, host, port, database, username, password, parameters);
     }
 
     /**
-     * Create a MariaDB database connection
+     * Create a MariaDB database connection.
      *
      * @param host       the database host address
      * @param port       the database port number
@@ -93,7 +99,7 @@ public final class DatabaseConnections {
      */
     public static DatabaseConnection mariadb(String host, int port, String database, String username, String password,
                                              DatabaseParameters parameters) {
-        return new MariaDBConnection(host, port, database, username, password, parameters);
+        return new MariaDBConnection(DatabaseType.MARIADB, host, port, database, username, password, parameters);
     }
 
     /**

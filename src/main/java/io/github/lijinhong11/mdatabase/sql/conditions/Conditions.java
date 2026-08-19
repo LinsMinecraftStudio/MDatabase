@@ -4,6 +4,15 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Static factory for creating SQL {@link Condition} objects.
+ * All conditions use parameterized queries ({@code ?} placeholders) to prevent SQL injection.
+ *
+ * <pre>{@code
+ * Conditions.eq("name", "Alice")
+ * Conditions.and(Conditions.gt("age", 18), Conditions.eq("status", "active"))
+ * }</pre>
+ */
 public class Conditions {
     /**
      * Create an equality condition

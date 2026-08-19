@@ -28,7 +28,7 @@ class SQLiteConnection extends AbstractDatabaseConnection {
     }
 
     @Override
-    Connection getConnection() throws SQLException {
+    Connection createRawConnection() throws SQLException {
         return dataSource.getConnection();
     }
 

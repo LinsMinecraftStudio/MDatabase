@@ -1,13 +1,23 @@
 package io.github.lijinhong11.mdatabase;
 
 import com.zaxxer.hikari.HikariConfig;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Configuration for the HikariCP connection pool underlying each database connection.
+ * <pre>{@code
+ * DatabaseParameters params = new DatabaseParameters();
+ * params.setMaxPoolSize(20);
+ * params.setAutoCommit(true);
+ * }</pre>
+ */
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class DatabaseParameters {
     private int maxPoolSize = 10;
     private Integer minimumIdle;

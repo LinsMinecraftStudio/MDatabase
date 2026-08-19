@@ -195,9 +195,6 @@ public final class AlterTableSQL extends SQL {
                 }
             }
             case DROP_COLUMN -> {
-                if (type == DatabaseType.SQLITE) {
-                    throw new UnsupportedOperationException("SQLite does not support DROP COLUMN");
-                }
                 sqlBuilder.append("DROP COLUMN ").append(op.columnName);
             }
             case MODIFY_COLUMN -> {

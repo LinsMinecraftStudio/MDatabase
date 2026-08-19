@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.github.lijinhong11</groupId>
-    <version>1.1.2</version>
+    <version>1.2.1</version>
     <artifactId>MDatabase</artifactId>
     <name>MDatabase</name>
     <description>A database library with some ORM features</description>
@@ -182,13 +182,13 @@
         <dependency>
             <groupId>com.zaxxer</groupId>
             <artifactId>HikariCP</artifactId>
-            <version>7.0.2</version>
+            <version>7.1.0</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.mariadb.jdbc</groupId>
             <artifactId>mariadb-java-client</artifactId>
-            <version>3.5.7</version>
+            <version>3.5.10</version>
             <scope>compile</scope>
             <exclusions>
                 <exclusion>
@@ -200,7 +200,7 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>42.7.11</version>
+            <version>42.7.13</version>
             <scope>compile</scope>
             <exclusions>
                 <exclusion>

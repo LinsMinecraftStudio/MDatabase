@@ -9,15 +9,25 @@ import org.jetbrains.annotations.NotNull;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+/**
+ * Database connection backed by the MariaDB Connector/J driver.
+ * Supports both MySQL ({@code jdbc:mysql://}) and MariaDB ({@code jdbc:mariadb://}) URL prefixes.
+ */
 class MariaDBConnection extends AbstractDatabaseConnection {
-    private static final String JDBC_URL_FORMAT = "jdbc:mariadb://%s:%d/%s?useSSL=false&serverTimezone=UTC";
     private static final String JDBC_DRIVER_CLASS_NAME = "org.mariadb.jdbc.Driver";
+    private static final String MYSQL_URL_FORMAT = "jdbc:mysql://%s:%d/%s?useSSL=false&serverTimezone=UTC";
+    private static final String MARIADB_URL_FORMAT = "jdbc:mariadb://%s:%d/%s?useSSL=false&serverTimezone=UTC";
 
     private final HikariDataSource dataSource;
+    private final DatabaseType databaseType;
 
-    public MariaDBConnection(String host, int port, String database, String username, String password, DatabaseParameters parameters) {
+    MariaDBConnection(DatabaseType type, String host, int port, String database, String username, String password,
+                      DatabaseParameters parameters) {
+        String urlFormat = type == DatabaseType.MYSQL ? MYSQL_URL_FORMAT : MARIADB_URL_FORMAT;
+        this.databaseType = type;
+
         HikariConfig cfg = new HikariConfig();
-        cfg.setJdbcUrl(JDBC_URL_FORMAT.formatted(host, port, database));
+        cfg.setJdbcUrl(urlFormat.formatted(host, port, database));
         cfg.setDriverClassName(JDBC_DRIVER_CLASS_NAME);
         cfg.setUsername(username);
         cfg.setPassword(password);
@@ -26,13 +36,13 @@ class MariaDBConnection extends AbstractDatabaseConnection {
     }
 
     @Override
-    Connection getConnection() throws SQLException {
+    Connection createRawConnection() throws SQLException {
         return dataSource.getConnection();
     }
 
     @Override
     public @NotNull DatabaseType getType() {
-        return DatabaseType.MARIADB;
+        return databaseType;
     }
 
     @Override

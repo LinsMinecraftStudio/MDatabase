@@ -40,8 +40,6 @@ class ObjectSerializerTest {
         byte[] setBytes = (byte[]) ObjectSerializer.convertBack(set);
         byte[] mapBytes = (byte[]) ObjectSerializer.convertBack(map);
 
-        System.out.println("Printing test data: ");
-        
         printValue("list", list);
         printBytes("list", listBytes);
         printValue("set", set);
